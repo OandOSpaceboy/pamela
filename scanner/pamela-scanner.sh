@@ -27,12 +27,14 @@ PAM_SCRIPT="${PAM_DIR}/$(basename $0)"
 REGISTER=''
 SIMULATE=''
 IF='eth0'
-OUT='http://yourserver.com/pamela/upload.php'
-USER=''
-PASSWORD=''
+OUT=''
 TRANSLATE=''
 POST=''
 TIMEOUT=200
+USER=''
+PASSWORD=''
+TOWN=''
+
 
 function usage {
   echo "Usage: pamela-scanner [OPTIONS] 
@@ -142,7 +144,9 @@ function translate {
   TRANSLATE_URL=${TRANSLATE}
   TRANSLATE=$(mktemp)
 
-  wget --timeout="${TIMEOUT}" --no-check-certificate --quiet -O "${TRANSLATE}" "${TRANSLATE_URL}"
+  wget --timeout="${TIMEOUT}" --no-check-certificate --quiet -O "${TRANSLATE}" "${TRANSLATE_URL}" --user "${USER}" --password "${PASSWORD}"
+
+  sed -i "s/$/@${TOWN}/" ${TRANSLATE}
 
   POST=$(echo ${POST} | awk -v names="${TRANSLATE}" 'BEGIN { 
     RS="\n"
@@ -164,6 +168,7 @@ function translate {
     }
   }')
 
+  echo $POST ######################################## change
   rm ${TRANSLATE}
 }
 
