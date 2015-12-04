@@ -168,7 +168,6 @@ function translate {
     }
   }')
 
-  echo $POST ######################################## change
   rm ${TRANSLATE}
 }
 
