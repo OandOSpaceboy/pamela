@@ -26,7 +26,7 @@ PAM_CRON="/etc/cron.d/pamela"
 PAM_SCRIPT="${PAM_DIR}/$(basename $0)"
 REGISTER=''
 SIMULATE=''
-IF='eth0'
+IF=''
 OUT=''
 TRANSLATE=''
 POST=''
@@ -34,7 +34,6 @@ TIMEOUT=200
 USER=''
 PASSWORD=''
 TOWN=''
-
 
 function usage {
   echo "Usage: pamela-scanner [OPTIONS] 
@@ -157,16 +156,15 @@ function translate {
     }
     close(names)
     RS=","
-    first=1
     while ((getline i)> 0) {
       sub(/\n$/,"",i)
-      #print "input:", i, "translates to", (i in nms?nms[i]:i)
-      if (!first) 
-        printf(",")
-      printf (i in nms?nms[i]:i)
-      first=0
+      if (i in nms?nms[i]:i ~ /@/)
+          printf ((i in nms?nms[i]:i)",")
     }
   }')
+
+
+  POST="${POST%?}"
 
   rm ${TRANSLATE}
 }

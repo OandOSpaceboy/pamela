@@ -39,7 +39,7 @@ function multiply() {
 
 $data = data_get();
 if (count($data) > 0) {
-//multiply();
+  //multiply();
  echo('["'.implode('", "', $data).'"]');
 } else {
  echo('[]');
